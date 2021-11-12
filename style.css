@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Monoton&family=Red+Hat+Mono:ital@0;1&family=Roboto+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+/* font-family: 'Lobster', cursive;
+font-family: 'Monoton', cursive;
+font-family: 'Red Hat Mono', monospace; 
+font-family: 'Roboto Mono', monospace;*/
+
+* {
+  box-sizing: border-box;
+  border: var(--border__default);
+  padding: 1rem;
+}
+html {
+  font-size: 62.5%;
+}
+:root {
+  --color__main: #2aabe4;
+  --color__main-light: #9dc8e4;
+  --color__secondary: #ffcd24;
+  --color__grey: #33393d;
+  --color__grey-light: #666b6e;
+  --color__black: #000;
+  --color__white: #fff;
+  --font__size-default: 1rem;
+  --font__family__main: 'Red Hat Mono', monospace;
+  --font__family__main-sub: 'Roboto Mono', monospace;
+  --font__family__header: 'Lobster', cursive;
+  --font__family__header-sub: 'Monoton', cursive;
+  --border__default: 1px solid var(--color__black);
+}
