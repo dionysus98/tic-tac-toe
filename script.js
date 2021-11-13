@@ -1,6 +1,6 @@
 'use strict';
 
-//Possible success cases
+//?Possible success cases
 const successAPI = {
   a: [1, 2, 3],
   b: [4, 5, 6],
@@ -12,7 +12,7 @@ const successAPI = {
   h: [3, 5, 7],
 };
 
-//player1
+//?player1
 const playerXContainer = document.querySelector('.container-one');
 const playerXDisplay = document.querySelector('.player-x__title');
 let playerXactive = true;
@@ -20,7 +20,7 @@ let playerXData = [];
 let playerXWin = false;
 let playerXScore = 0;
 
-//player2
+//? player2
 const playerOContainer = document.querySelector('.container-three');
 const playerODisplay = document.querySelector('.player-o__title');
 let playerOactive = false;
@@ -28,16 +28,17 @@ let playerOData = [];
 let playerOWin = false;
 let playerOScore = 0;
 
-//footer
+//? Footer
 const footer = document.querySelector('.footer__title');
 
-//info
+//? Info
 const infoContainer = document.querySelector('.info');
 
-//grid
+//? Grid
 const gridConatiner = document.querySelector('.grid__container');
 const gridBtn = document.querySelectorAll('.grid__item-btn');
 
+//? App
 gridBtn.forEach((btn) =>
   btn.addEventListener('click', (e) => {
     const box = e.target;
@@ -45,9 +46,11 @@ gridBtn.forEach((btn) =>
 
     const active = box.attributes.class.textContent.split(' ')[1];
 
+    //? Guard
     if (active) return;
     if (playerXWin || playerOWin) return;
 
+    //? Add X - O
     if (playerXactive) {
       box.textContent = 'X';
       box.classList.add('player-one');
@@ -59,6 +62,7 @@ gridBtn.forEach((btn) =>
       playerOData.push(+index);
     }
 
+    //? Compare Value with Success API
     if (playerXData.length === 3) {
       let sortX = playerXData.slice().sort((a, b) => a - b);
 
@@ -70,6 +74,7 @@ gridBtn.forEach((btn) =>
       });
       playerXData.shift();
     }
+
     if (playerOData.length === 3) {
       let sortO = playerOData.slice().sort((a, b) => a - b);
 
@@ -83,6 +88,7 @@ gridBtn.forEach((btn) =>
       playerOData.shift();
     }
 
+    //? Player X Won
     if (playerXWin || playerOWin) {
       if (playerXWin) {
         gridBtn.forEach((button) => {
@@ -95,6 +101,7 @@ gridBtn.forEach((btn) =>
         playerXDisplay.textContent = playerXScore;
       }
 
+      //? Player O won
       if (playerOWin) {
         gridBtn.forEach((button) => {
           if (button.textContent === 'O') button.classList.add('winner');
@@ -106,6 +113,7 @@ gridBtn.forEach((btn) =>
         playerODisplay.textContent = playerOScore;
       }
 
+      //?Auto Reset : 3 Sec
       setTimeout(() => {
         gridBtn.forEach((btn) => {
           btn.textContent = '';
@@ -126,11 +134,13 @@ gridBtn.forEach((btn) =>
       }, 3000);
     }
 
+    //? Active Player
     playerXactive = !playerXactive;
     playerOactive = !playerOactive;
   })
 );
 
+//? Info Display
 footer.addEventListener('click', function () {
   infoContainer.classList.toggle('hidden');
   infoContainer
