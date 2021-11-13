@@ -16,11 +16,15 @@ const successAPI = {
 const playerXContainer = document.querySelector('.container-one');
 const playerXDisplay = document.querySelector('.player-x__title');
 let playerXactive = true;
+let playerXData = [];
+let playerXWin = false;
 
 //player2
 const playerOContainer = document.querySelector('.container-three');
 const playerODisplay = document.querySelector('.player-o__title');
 let playerOactive = false;
+let playerOData = [];
+let playerOWin = false;
 
 //footer
 const footer = document.querySelector('.footer__title');
@@ -35,18 +39,46 @@ const gridBtn = document.querySelectorAll('.grid__item-btn');
 gridBtn.forEach((btn) =>
   btn.addEventListener('click', (e) => {
     const box = e.target;
-    const gridItem = box.closest('.grid__item');
+    const { index } = box.closest('.grid__item').dataset;
+
     const active = box.attributes.class.textContent.split(' ')[1];
 
+    if (playerXWin || playerOWin) return;
     if (active) return;
 
     if (playerXactive) {
       box.textContent = 'X';
       box.classList.add('player-one');
+      playerXData.push(+index);
     }
     if (playerOactive) {
       box.textContent = 'O';
       box.classList.add('player-two');
+      playerOData.push(+index);
+    }
+
+    if (playerXData.length === 3) {
+      let sortX = playerXData.slice().sort((a, b) => a - b);
+
+      Object.values(successAPI).forEach((api, index) => {
+        if (JSON.stringify(api) === JSON.stringify(sortX)) {
+          playerXWin = !playerXWin;
+          return;
+        }
+      });
+      playerXData.shift();
+    }
+    if (playerOData.length === 3) {
+      let sortO = playerOData.slice().sort((a, b) => a - b);
+
+      Object.values(successAPI).forEach((api, index) => {
+        if (JSON.stringify(api) === JSON.stringify(sortO)) {
+          console.log('true');
+          playerOWin = !playerOWin;
+          return;
+        }
+      });
+      playerOData.shift();
     }
 
     playerXactive = !playerXactive;
