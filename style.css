@@ -135,7 +135,7 @@ body {
   background-color: var(--color__white);
   display: flex;
   justify-content: space-around;
-  margin: 3rem auto;
+  margin: 2rem auto;
 }
 
 .info__personal-que {
@@ -155,7 +155,7 @@ body {
   font-family: inherit;
   transition: all 0.2s;
   text-decoration: none;
-  margin: 3rem auto;
+  margin: 1rem auto;
   background-color: var(--color__black);
   backface-visibility: hidden;
   color: var(--color__white);
@@ -252,7 +252,7 @@ body {
   text-shadow: 1.5px 1.5px 3px var(--color__black);
 }
 .hidden {
-  transform: translateY(300px);
+  transform: translateY(20rem);
   opacity: 0;
   z-index: 0;
 }

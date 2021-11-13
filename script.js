@@ -18,6 +18,7 @@ const playerXDisplay = document.querySelector('.player-x__title');
 let playerXactive = true;
 let playerXData = [];
 let playerXWin = false;
+let playerXScore = 0;
 
 //player2
 const playerOContainer = document.querySelector('.container-three');
@@ -25,6 +26,7 @@ const playerODisplay = document.querySelector('.player-o__title');
 let playerOactive = false;
 let playerOData = [];
 let playerOWin = false;
+let playerOScore = 0;
 
 //footer
 const footer = document.querySelector('.footer__title');
@@ -43,8 +45,8 @@ gridBtn.forEach((btn) =>
 
     const active = box.attributes.class.textContent.split(' ')[1];
 
-    if (playerXWin || playerOWin) return;
     if (active) return;
+    if (playerXWin || playerOWin) return;
 
     if (playerXactive) {
       box.textContent = 'X';
@@ -79,6 +81,49 @@ gridBtn.forEach((btn) =>
         }
       });
       playerOData.shift();
+    }
+
+    if (playerXWin || playerOWin) {
+      if (playerXWin) {
+        gridBtn.forEach((button) => {
+          if (button.textContent === 'X') button.classList.add('winner');
+          playerXContainer.classList.add('winner');
+          playerOContainer.classList.add('loser');
+          return;
+        });
+        playerXScore++;
+        playerXDisplay.textContent = playerXScore;
+      }
+
+      if (playerOWin) {
+        gridBtn.forEach((button) => {
+          if (button.textContent === 'O') button.classList.add('winner');
+          playerOContainer.classList.add('winner');
+          playerXContainer.classList.add('loser');
+          return;
+        });
+        playerOScore++;
+        playerODisplay.textContent = playerOScore;
+      }
+
+      setTimeout(() => {
+        gridBtn.forEach((btn) => {
+          btn.textContent = '';
+          btn.classList.remove('player-one');
+          btn.classList.remove('player-two');
+          btn.classList.remove('winner');
+          playerXContainer.classList.remove('winner');
+          playerXContainer.classList.remove('loser');
+          playerOContainer.classList.remove('winner');
+          playerOContainer.classList.remove('loser');
+        });
+        playerXactive = true;
+        playerXData = [];
+        playerXWin = false;
+        playerOactive = false;
+        playerOData = [];
+        playerOWin = false;
+      }, 3000);
     }
 
     playerXactive = !playerXactive;
