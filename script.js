@@ -19,6 +19,7 @@ let playerXactive = true;
 let playerXData = [];
 let playerXWin = false;
 let playerXScore = 0;
+let playerXshift = [];
 
 //? player2
 const playerOContainer = document.querySelector('.container-three');
@@ -27,9 +28,12 @@ let playerOactive = false;
 let playerOData = [];
 let playerOWin = false;
 let playerOScore = 0;
+let playerOshift = [];
 
 //? Footer
 const footer = document.querySelector('.footer__title');
+const reset = document.querySelector('.reset');
+let resetActive = true;
 
 //? Info
 const infoContainer = document.querySelector('.info');
@@ -42,13 +46,18 @@ const gridBtn = document.querySelectorAll('.grid__item-btn');
 gridBtn.forEach((btn) =>
   btn.addEventListener('click', (e) => {
     const box = e.target;
-    const { index } = box.closest('.grid__item').dataset;
-
-    const active = box.attributes.class.textContent.split(' ')[1];
+    const { index } = box.dataset;
 
     //? Guard
-    if (active) return;
     if (playerXWin || playerOWin) return;
+    if (box.dataset.active) return;
+    box.dataset.active = true;
+
+    //? reset button activate
+    if (resetActive) {
+      reset.classList.remove('inactive');
+      footer.classList.add('inactive');
+    }
 
     //? Add X - O
     if (playerXactive) {
@@ -62,34 +71,36 @@ gridBtn.forEach((btn) =>
       playerOData.push(+index);
     }
 
-    //? Compare Value with Success API
-    if (playerXData.length === 3) {
+    //? Compare X Value with Success API
+    if (playerXData.length >= 3) {
       let sortX = playerXData.slice().sort((a, b) => a - b);
-
       Object.values(successAPI).forEach((api, index) => {
-        if (JSON.stringify(api) === JSON.stringify(sortX)) {
+        let intersections = api.filter((e) => sortX.indexOf(e) !== -1);
+        if (JSON.stringify(api) === JSON.stringify(intersections)) {
+          console.log('X');
           playerXWin = !playerXWin;
           return;
         }
       });
-      playerXData.shift();
     }
 
-    if (playerOData.length === 3) {
+    //? Compare O Value with Success API
+    if (playerOData.length >= 3) {
       let sortO = playerOData.slice().sort((a, b) => a - b);
-
       Object.values(successAPI).forEach((api, index) => {
-        if (JSON.stringify(api) === JSON.stringify(sortO)) {
-          console.log('true');
+        let intersections = api.filter((e) => sortO.indexOf(e) !== -1);
+        if (JSON.stringify(api) === JSON.stringify(intersections)) {
+          console.log('O');
           playerOWin = !playerOWin;
           return;
         }
       });
-      playerOData.shift();
     }
 
-    //? Player X Won
     if (playerXWin || playerOWin) {
+      resetActive = !resetActive;
+
+      //? Player X Won
       if (playerXWin) {
         gridBtn.forEach((button) => {
           if (button.textContent === 'X') button.classList.add('winner');
@@ -117,6 +128,7 @@ gridBtn.forEach((btn) =>
       setTimeout(() => {
         gridBtn.forEach((btn) => {
           btn.textContent = '';
+          btn.dataset.active = '';
           btn.classList.remove('player-one');
           btn.classList.remove('player-two');
           btn.classList.remove('winner');
@@ -132,6 +144,9 @@ gridBtn.forEach((btn) =>
         playerOData = [];
         playerOWin = false;
       }, 3000);
+      reset.classList.add('inactive');
+      footer.classList.remove('inactive');
+      resetActive = !resetActive;
     }
 
     //? Active Player
@@ -146,4 +161,25 @@ footer.addEventListener('click', function () {
   infoContainer
     .querySelector('.info__remove')
     .addEventListener('click', () => infoContainer.classList.add('hidden'));
+});
+
+//? Reset
+reset.addEventListener('click', function () {
+  gridBtn.forEach((btn) => {
+    btn.textContent = '';
+    btn.dataset.active = '';
+    btn.classList.remove('player-one');
+    btn.classList.remove('player-two');
+    btn.classList.remove('winner');
+    playerXContainer.classList.remove('winner');
+    playerXContainer.classList.remove('loser');
+    playerOContainer.classList.remove('winner');
+    playerOContainer.classList.remove('loser');
+  });
+  playerXactive = true;
+  playerXData = [];
+  playerXWin = false;
+  playerOactive = false;
+  playerOData = [];
+  playerOWin = false;
 });
